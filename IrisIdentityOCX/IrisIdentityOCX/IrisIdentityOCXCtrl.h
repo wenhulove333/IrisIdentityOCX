@@ -1,4 +1,5 @@
 #pragma once
+#include "TestDlg.h"
 #include "CameraShowDlg.h"
 
 // IrisIdentityOCXCtrl.h : CIrisIdentityOCXCtrl ActiveX 控件类的声明。
@@ -46,10 +47,10 @@ public:
 	enum {
 		dispidsaveIrisTemplates = 3L,
 		dispidendEnroll = 2L,
-		dispidrecordVideo = 1L
+		dispidstartEnroll = 1L
 	};
 protected:
-	void recordVideo();
+	void startEnroll();
 	void endEnroll();
 	void saveIrisTemplates();
 public:

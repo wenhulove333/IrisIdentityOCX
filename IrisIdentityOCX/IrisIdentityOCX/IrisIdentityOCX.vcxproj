@@ -234,6 +234,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraShowDlg.h" />
@@ -250,6 +251,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IrisIdentityOCX.def" />

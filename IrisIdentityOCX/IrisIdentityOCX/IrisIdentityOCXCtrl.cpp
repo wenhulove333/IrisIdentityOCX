@@ -24,7 +24,7 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CIrisIdentityOCXCtrl, COleControl)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "AboutBox", DISPID_ABOUTBOX, AboutBox, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "recordVideo", dispidrecordVideo, recordVideo, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "startEnroll", dispidstartEnroll, startEnroll, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "endEnroll", dispidendEnroll, endEnroll, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "saveIrisTemplates", dispidsaveIrisTemplates, saveIrisTemplates, VT_EMPTY, VTS_NONE)
 END_DISPATCH_MAP()
@@ -118,8 +118,7 @@ void CIrisIdentityOCXCtrl::OnDraw(
 		return;
 
 	// TODO:  用您自己的绘图代码替换下面的代码。
-	pdc->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
-	pdc->Ellipse(rcBounds);
+	cameraShowDlg.MoveWindow(rcBounds, TRUE);
 }
 
 // CIrisIdentityOCXCtrl::DoPropExchange - 持久性支持
@@ -155,11 +154,12 @@ void CIrisIdentityOCXCtrl::AboutBox()
 // CIrisIdentityOCXCtrl 消息处理程序
 
 
-void CIrisIdentityOCXCtrl::recordVideo()
+void CIrisIdentityOCXCtrl::startEnroll()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.startEnroll();
 }
 
 
@@ -168,6 +168,7 @@ void CIrisIdentityOCXCtrl::endEnroll()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.endEnroll();
 }
 
 
@@ -176,6 +177,7 @@ void CIrisIdentityOCXCtrl::saveIrisTemplates()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.saveIrisTemplates();
 }
 
 
@@ -185,7 +187,7 @@ int CIrisIdentityOCXCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
-
+	cameraShowDlg.Create(IDD_CAMERASHOWDLG, this);
 	return 0;
 }
 
@@ -195,4 +197,7 @@ void CIrisIdentityOCXCtrl::OnSize(UINT nType, int cx, int cy)
 	COleControl::OnSize(nType, cx, cy);
 
 	// TODO: 在此处添加消息处理程序代码
+	RECT activeXRect;
+	GetClientRect(&activeXRect);
+	cameraShowDlg.MoveWindow(&activeXRect);
 }

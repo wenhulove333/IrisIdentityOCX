@@ -17,9 +17,7 @@ public:
 	virtual ~CCameraShowDlg();
 
 // 对话框数据
-#ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_CAMERASHOWDLG };
-#endif
 
 	static vector<CIrisIdentity*>* irisIdentityProcesses;
 	static bool isExitCaptureThread;
