@@ -1,0 +1,45 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>虹膜识别OCX Demo</title>
+
+<script type="text/javascript">
+  function StartEnroll()
+  { 	
+        irisIdentity.recordVideo();
+  }
+  function StopEnroll()
+  {
+		irisIdentity.EndEnroll();
+  }
+  function SaveTemplate()
+  {
+  		irisIdentity.saveIrisTemplates();
+  }
+  function GetValidCameraList()
+  {
+		irisIdentity.AboutBox()
+  }
+  function StartMatch()
+  {
+  }
+</script>
+
+</head>
+
+<body>
+
+<div style="text-align:center;" >
+<object classid="clsid:76E62D85-A6FF-4510-95A5-A85082B60E5A" id="irisIdentity"  width="800" height="450" ></object>
+</div>
+
+<div>
+  <input type="button" value="开始注册" name="StartEnroll" onClick="StartEnroll()">
+  <input type="button" value="结束注册" name="StopEnroll" onClick="StopEnroll()">
+  <input type="button" value="保存模板" name="SaveTemplate" onClick="SaveTemplate()">
+  <input type="button" value="获取可用的摄像头列表" name="GetValidCameraList" onClick="GetValidCameraList()">
+  <input type="button" value="开始识别" name="StartMatch" onClick="StartMatch()">
+</div>
+
+</body>
+</html>

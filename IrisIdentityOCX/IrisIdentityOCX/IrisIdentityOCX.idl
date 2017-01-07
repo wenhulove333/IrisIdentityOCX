@@ -1,0 +1,54 @@
+// IrisIdentityOCX.idl : ActiveX 控件项目的类型库源。
+
+// 此文件将由 MIDL 编译器工具处理以
+// 产生类型库(IrisIdentityOCX.tlb)，该类型库将成为
+// IrisIdentityOCX.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(7F35E591-C8DD-4FED-B1EB-9D2A9A3C19F3), version(1.0),
+  control ]
+library IrisIdentityOCXLib
+{
+	importlib(STDOLE_TLB);
+
+	//  CIrisIdentityOCXCtrl 的主调度接口
+	[ 
+		uuid(936F559C-13D0-4E46-A912-13FA39D39921)	
+	]
+	dispinterface _DIrisIdentityOCX
+	{
+		properties:
+		methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+			[id(1)] void startEnroll();
+			[id(2)] void endEnroll();
+			[id(3)] void saveIrisTemplates();
+	};
+
+	//  CIrisIdentityOCXCtrl 的事件调度接口
+
+	[ 
+		uuid(F13873FB-C4AD-4D5A-BA5A-C775A32BDC12)	
+	]
+	dispinterface _DIrisIdentityOCXEvents
+	{
+		properties:
+			//  事件接口没有任何属性
+
+		methods:
+	};
+
+	//  CIrisIdentityOCXCtrl 的类信息
+	[
+		uuid(76E62D85-A6FF-4510-95A5-A85082B60E5A)
+	]
+	coclass IrisIdentityOCX
+	{
+		[default] dispinterface _DIrisIdentityOCX;
+		[default, source] dispinterface _DIrisIdentityOCXEvents;
+	};
+
+};
