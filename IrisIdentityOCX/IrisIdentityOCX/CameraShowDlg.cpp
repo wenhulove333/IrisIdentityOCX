@@ -19,6 +19,12 @@ CvVideoWriter* writer = 0;
 vector<CIrisIdentity*>* CCameraShowDlg::irisIdentityProcesses = new vector<CIrisIdentity*>();
 bool CCameraShowDlg::isExitCaptureThread = false;
 
+typedef struct tagCaptureThreadParas
+{
+	HWND hWnd;
+	ENUM_MODE mode;
+} CaptureThreadParas_t;
+
 #define WM_USER_MSG (WM_USER + 1)
 #define WM_USER_FRAME_CAPTURE_MSG (WM_USER + 2)
 
@@ -54,7 +60,7 @@ END_MESSAGE_MAP()
 
 // CCameraShowDlg 消息处理程序
 
-void CCameraShowDlg::startEnroll()
+void CCameraShowDlg::startIrisIdentity(ENUM_MODE mode)
 {
 	capture = new VideoCapture(CIRISIDENTITY_CAMERA_NO);
 
@@ -73,13 +79,21 @@ void CCameraShowDlg::startEnroll()
 
 	isExitCaptureThread = false;
 
-	captureThread = AfxBeginThread(captureFrameFunc, this->GetSafeHwnd());
+	CaptureThreadParas_t* captureThreadParas = (CaptureThreadParas_t*)malloc(sizeof(CaptureThreadParas_t));
+	if (NULL == captureThreadParas) {
+		return;
+	}
+
+	captureThreadParas->hWnd = GetSafeHwnd();
+	captureThreadParas->mode = mode;
+
+	captureThread = AfxBeginThread(captureFrameFunc, captureThreadParas);
 	if (NULL == captureThread) {
 		return;
 	}
 }
 
-void CCameraShowDlg::endEnroll() {
+void CCameraShowDlg::endIrisIdentity() {
 	if (NULL != captureThread) {
 		isExitCaptureThread = true;
 		::WaitForSingleObject(captureThread, INFINITE);
@@ -108,7 +122,7 @@ void CCameraShowDlg::saveIrisTemplates() //save teTempaltempaltes
 
 		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_R_T.BIN", currentExecuteDirectory, index);
 		DeleteFileW(szFileName);
-		wsprintf(szFileName, L"%s\OU\TPUT\\%d_EYE_R_M.BIN", currentExecuteDirectory, index);
+		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_R_M.BIN", currentExecuteDirectory, index);
 		DeleteFileW(szFileName);
 	}
 
@@ -139,7 +153,7 @@ void CCameraShowDlg::saveIrisTemplates() //save teTempaltempaltes
 
 		index++;
 
-		free(*iter);
+		irisIdentity->getLocalStorage().updatePersonIrisTemplates(L"test", *iter);
 	}
 
 	validIrisTemplates->clear();
@@ -206,8 +220,9 @@ LRESULT CCameraShowDlg::OnUserMsg(WPARAM wp, LPARAM lp) {
 
 LRESULT CCameraShowDlg::OnUserFrameCaptureMsg(WPARAM wp, LPARAM lp) {
 	Mat* frame = (Mat*)wp;
+	ENUM_MODE mode = (ENUM_MODE)lp;
 
-	handleFrame(frame);
+	handleFrame(frame, mode);
 
 	return 1L;
 }
@@ -236,14 +251,15 @@ UINT CCameraShowDlg::threadFunc(LPVOID n) {
 }
 
 UINT CCameraShowDlg::captureFrameFunc(LPVOID n) {
-	HWND hWnd = (HWND)n;
+	CaptureThreadParas_t* captureThreadParas = (CaptureThreadParas_t*)n;
 	while (true) {
 		Mat* frame = new Mat();
 		*capture >> *frame;
 		waitKey(30);
-		::PostMessage(hWnd, WM_USER_FRAME_CAPTURE_MSG, WPARAM(frame), LPARAM(0));
+		::PostMessage(captureThreadParas->hWnd, WM_USER_FRAME_CAPTURE_MSG, WPARAM(frame), LPARAM(captureThreadParas->mode));
 
 		if (isExitCaptureThread) {
+			free(n);
 			break;
 		}
 	}
@@ -277,11 +293,11 @@ void CCameraShowDlg::commitFrame(int cameraID, CFrameInfo *frameInfo) {
 	}
 }
 
-void CCameraShowDlg::handleFrame(Mat* frame) {
+void CCameraShowDlg::handleFrame(Mat* frame, ENUM_MODE mode) {
 	CImage2DC image2DC;
 	image2DC.Show2DC(*frame, hDC, rect.Height(), rect.Width());
 
-	CFrameInfo* frameInfo = new CFrameInfo(frame, CAM_EQII_30_34_28_38, MODE_ENROLL);
+	CFrameInfo* frameInfo = new CFrameInfo(frame, CAM_EQII_30_34_28_38, mode);
 
 	commitFrame(1, frameInfo);
 }

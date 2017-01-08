@@ -42,12 +42,12 @@ public:
 
 	CIrisIdentity* getIrisIdentityByCameraID(int cameraID);
 
-	void startEnroll();
-	void endEnroll();
+	void startIrisIdentity(ENUM_MODE mode);
+	void endIrisIdentity();
 	void saveIrisTemplates();
 
 private:
 	wchar_t currentExecuteDirectory[255];
 
-	void handleFrame(Mat* frame);
+	void handleFrame(Mat* frame, ENUM_MODE mode);
 };

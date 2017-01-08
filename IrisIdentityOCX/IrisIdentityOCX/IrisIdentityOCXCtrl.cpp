@@ -27,6 +27,8 @@ BEGIN_DISPATCH_MAP(CIrisIdentityOCXCtrl, COleControl)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "startEnroll", dispidstartEnroll, startEnroll, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "endEnroll", dispidendEnroll, endEnroll, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "saveIrisTemplates", dispidsaveIrisTemplates, saveIrisTemplates, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "startMatch", dispidstartMatch, startMatch, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "endMatch", dispidendMatch, endMatch, VT_EMPTY, VTS_NONE)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -159,7 +161,7 @@ void CIrisIdentityOCXCtrl::startEnroll()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
-	cameraShowDlg.startEnroll();
+	cameraShowDlg.startIrisIdentity(MODE_ENROLL);
 }
 
 
@@ -168,7 +170,7 @@ void CIrisIdentityOCXCtrl::endEnroll()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
-	cameraShowDlg.endEnroll();
+	cameraShowDlg.endIrisIdentity();
 }
 
 
@@ -200,4 +202,22 @@ void CIrisIdentityOCXCtrl::OnSize(UINT nType, int cx, int cy)
 	RECT activeXRect;
 	GetClientRect(&activeXRect);
 	cameraShowDlg.MoveWindow(&activeXRect);
+}
+
+
+void CIrisIdentityOCXCtrl::startMatch()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.startIrisIdentity(MODE_MATCH);
+}
+
+
+void CIrisIdentityOCXCtrl::endMatch()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.endIrisIdentity();
 }

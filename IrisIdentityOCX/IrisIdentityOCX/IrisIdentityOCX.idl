@@ -26,6 +26,8 @@ library IrisIdentityOCXLib
 			[id(1)] void startEnroll();
 			[id(2)] void endEnroll();
 			[id(3)] void saveIrisTemplates();
+			[id(4)] void startMatch();
+			[id(5)] void endMatch();
 	};
 
 	//  CIrisIdentityOCXCtrl 的事件调度接口

@@ -87,7 +87,7 @@ bool CIrisIdentity::getIrisInfo(CFrameInfo* frameInfo, PreviewImageInfo_t* image
 	int errorCode = MAG_GetIrisInfo(frameInfo->getCameraType(), imageInfo, frameInfo->getMode(), &eyePos, NULL);
 	if (errorCode != 0)
 	{
-		returnInfo->setInfoReadable(irisIdentityInfo.getIrisIdentityInfo(errorCode));
+		returnInfo->setInfoReadable(irisIdentityInfo.getReadableInfoForCallIrisInfoSDK(errorCode));
 		returnInfos->push(returnInfo);
 		return false;
 	}
@@ -135,7 +135,7 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 
 	if (errorCode != 0)
 	{
-		returnInfo->setInfoReadable(irisIdentityInfo.getIrisIdentityInfo(errorCode));
+		returnInfo->setInfoReadable(irisIdentityInfo.getReadableInfoForCallIrisInfoSDK(errorCode));
 		returnInfos->push(returnInfo);
 	}
 	else
@@ -155,7 +155,14 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 		}
 		else if (frameInfo->getMode() == MODE_MATCH && (eyePos.leftEyePos == EYE_POS_SUITABLE || eyePos.rightEyePos == EYE_POS_SUITABLE))
 		{
-			returnInfo->setInfoReadable(irisIdentityInfo.getIrisIdentityInfo(errorCode));
+			bool result = this->localStorage.compareTemplates(L"test", frameInfo->getCameraType(), irisTemplates, NULL);
+			if (result) {
+				returnInfo->setInfoReadable(L"Match Procedure: match.");
+			}
+			else {
+				returnInfo->setInfoReadable(L"Match Procedure: can't match.");
+			}
+			
 			returnInfos->push(returnInfo);
 		}
 		else
@@ -202,4 +209,8 @@ HWND CIrisIdentity::getHWND() {
 
 vector<IrisTemplates_t*>& CIrisIdentity::getValidIrisTemplatesVec() {
 	return this->validIrisTemplatesVec;
+}
+
+CLocalStorage& CIrisIdentity::getLocalStorage() {
+	return this->localStorage;
 }

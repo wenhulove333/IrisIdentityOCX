@@ -3,6 +3,7 @@
 #include "Magpie\MagpieApi.h"
 #include "IrisIdentityReturnInfo.h"
 #include "IrisIdentityInfo.h"
+#include "LocalStorage.h"
 #include "FrameInfo.h"
 #include "OpenCVProxy.h"
 #include <queue>
@@ -19,6 +20,7 @@ private:
 	queue<CFrameInfo*>* frameInfos;
 	vector<IrisTemplates_t*> validIrisTemplatesVec;
 	int cameraID;
+	CLocalStorage localStorage;
 
 public:
 	static int MAXFRAMESINQUEUE;
@@ -46,6 +48,8 @@ public:
 	queue<CFrameInfo*>* getFrameInfos();
 
 	vector<IrisTemplates_t*>& getValidIrisTemplatesVec();
+
+	CLocalStorage& getLocalStorage();
 };
 
 

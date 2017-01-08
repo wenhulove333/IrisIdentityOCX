@@ -45,6 +45,8 @@ protected:
 // 调度和事件 ID
 public:
 	enum {
+		dispidendMatch = 5L,
+		dispidstartMatch = 4L,
 		dispidsaveIrisTemplates = 3L,
 		dispidendEnroll = 2L,
 		dispidstartEnroll = 1L
@@ -56,5 +58,8 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+protected:
+	void startMatch();
+	void endMatch();
 };
 

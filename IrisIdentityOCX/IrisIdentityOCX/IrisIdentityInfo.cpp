@@ -3,24 +3,25 @@
 
 CIrisIdentityInfo::CIrisIdentityInfo()
 {
-	infos[0] = L"Sucess";
-	infos[1] = L"Parameter error";
-	infos[2] = L"Insufficient memory";
-	infos[3] = L"Inproper image quality";
-	infos[4] = L"Template mismatch";
-	infos[5] = L"No eye found in image";
-	infos[6] = L"Too many eyes found in image";
-	infos[7] = L"Not enough tempaltes for select";
-	infos[8] = L"SDK configuration file corrupt";
-	infos[9] = L"Error during template generation";
-	infos[10] = L"HW no license";
-	infos[11] = L"HW error";
-	infos[12] = L"License expired";
+	resultMappingsOfCallIrisSDK[MAG_OK] = L"Sucess";
+	resultMappingsOfCallIrisSDK[MAG_ERR_PARAM] = L"Parameter error";
+	resultMappingsOfCallIrisSDK[MAG_ERR_MEM_SHORTAGE] = L"Insufficient memory";
+	resultMappingsOfCallIrisSDK[MAG_ERR_BLUR] = L"Inproper image quality";
+	resultMappingsOfCallIrisSDK[MAG_ERR_MISMATCH] = L"Template mismatch";
+	resultMappingsOfCallIrisSDK[MAG_ERR_NO_EYE] = L"No eye found in image";
+	resultMappingsOfCallIrisSDK[MAG_ERR_TOO_MANY_EYES] = L"Too many eyes found in image";
+	resultMappingsOfCallIrisSDK[MAG_ERR_SELECT_TEMPLATE] = L"Not enough tempaltes for select";
+	resultMappingsOfCallIrisSDK[MAG_ERR_DAT_FILE_CORRUPT] = L"SDK configuration file corrupt";
+	resultMappingsOfCallIrisSDK[MAG_ERR_GENERATE_TEMPLATE] = L"Error during template generation";
+	resultMappingsOfCallIrisSDK[MAG_ERR_HW_NO_LICENSED] = L"HW no license";
+	resultMappingsOfCallIrisSDK[MAG_ERR_HW] = L"HW error";
+	resultMappingsOfCallIrisSDK[MAG_ERR_LICENSE_EXPIRED] = L"License expired";
+
 	//------------------------------------------------------------
-	infos[100 + EYE_POS_SUITABLE] = L"position OK";
-	infos[100 + EYE_POS_TOO_NEAR] = L"postion too near";
-	infos[100 + EYE_POS_TOO_FAR] = L"postion too far";
-	infos[100 + EYE_POS_UNKNOWN] = L"postion unknown";
+	resultMappingsOfEyePos[EYE_POS_SUITABLE] = L"position OK";
+	resultMappingsOfEyePos[EYE_POS_TOO_NEAR] = L"postion too near";
+	resultMappingsOfEyePos[EYE_POS_TOO_FAR] = L"postion too far";
+	resultMappingsOfEyePos[EYE_POS_UNKNOWN] = L"postion unknown";
 }
 
 
@@ -28,6 +29,6 @@ CIrisIdentityInfo::~CIrisIdentityInfo()
 {
 }
 
-wchar_t* CIrisIdentityInfo::getIrisIdentityInfo(int infoCode) {
-	return infos[infoCode];
+wchar_t* CIrisIdentityInfo::getReadableInfoForCallIrisInfoSDK(int infoCode) {
+	return resultMappingsOfCallIrisSDK[infoCode];
 }

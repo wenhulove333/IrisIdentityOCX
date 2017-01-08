@@ -57,6 +57,15 @@
     <ClCompile Include="TestDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EnrolledIrisTemplates.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalStorage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonIrisTemplates.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -102,6 +111,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TestDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EnrolledIrisTemplates.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalStorage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonIrisTemplates.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonDef.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
