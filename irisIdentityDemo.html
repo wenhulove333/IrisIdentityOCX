@@ -16,12 +16,13 @@
   {
   		irisIdentity.saveIrisTemplates();
   }
-  function GetValidCameraList()
-  {
-		irisIdentity.AboutBox();
-  }
   function StartMatch()
   {
+		irisIdentity.startMatch();
+  }
+  function EndMatch()
+  {
+		irisIdentity.endMatch();
   }
 </script>
 
@@ -30,15 +31,15 @@
 <body>
 
 <div style="text-align:center;" >
-<object classid="clsid:76E62D85-A6FF-4510-95A5-A85082B60E5A" id="irisIdentity"  width="800" height="450" ></object>
+<object classid="clsid:76E62D85-A6FF-4510-95A5-A85082B60E5A" id="irisIdentity"  width="640" height="420" ></object>
 </div>
 
 <div>
   <input type="button" value="开始注册" name="StartEnroll" onClick="StartEnroll()">
   <input type="button" value="结束注册" name="StopEnroll" onClick="StopEnroll()">
   <input type="button" value="保存模板" name="SaveTemplate" onClick="SaveTemplate()">
-  <input type="button" value="获取可用的摄像头列表" name="GetValidCameraList" onClick="GetValidCameraList()">
   <input type="button" value="开始识别" name="StartMatch" onClick="StartMatch()">
+  <input type="button" value="结束识别" name="StartMatch" onClick="EndMatch()">
 </div>
 
 </body>
