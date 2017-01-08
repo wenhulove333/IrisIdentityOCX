@@ -21,6 +21,7 @@
 *.xdc
 *.opendb
 *.VC.db
+!dependency/*.dll
 ipch
 Debug
 Release
