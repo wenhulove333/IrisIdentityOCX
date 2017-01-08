@@ -25,9 +25,6 @@ typedef struct tagCaptureThreadParas
 	ENUM_MODE mode;
 } CaptureThreadParas_t;
 
-#define WM_USER_MSG (WM_USER + 1)
-#define WM_USER_FRAME_CAPTURE_MSG (WM_USER + 2)
-
 #define CIRISIDENTITY_CAMERA_NO (1)
 
 // CCameraShowDlg ¶Ô»°¿ò
@@ -55,6 +52,7 @@ BEGIN_MESSAGE_MAP(CCameraShowDlg, CDialogEx)
 	ON_COMMAND(IDCLOSE, &CCameraShowDlg::OnIdclose)
 	ON_MESSAGE(WM_USER_MSG, &CCameraShowDlg::OnUserMsg)
 	ON_MESSAGE(WM_USER_FRAME_CAPTURE_MSG, &CCameraShowDlg::OnUserFrameCaptureMsg)
+	ON_MESSAGE(WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, &CCameraShowDlg::OnUserGetValidIrisTemplatesSucc)
 END_MESSAGE_MAP()
 
 
@@ -89,8 +87,11 @@ void CCameraShowDlg::startIrisIdentity(ENUM_MODE mode)
 
 	captureThread = AfxBeginThread(captureFrameFunc, captureThreadParas);
 	if (NULL == captureThread) {
+		free(captureThreadParas);
 		return;
 	}
+
+	CIrisIdentity::MAXFRAMESINQUEUE = 1;
 }
 
 void CCameraShowDlg::endIrisIdentity() {
@@ -151,9 +152,8 @@ void CCameraShowDlg::saveIrisTemplates() //save teTempaltempaltes
 			CCommonUtils::SaveFile(fileName, (*iter)->rightEye.byMask, IRIS_TEMPLATE_SIZE);
 		}
 
-		index++;
-
 		irisIdentity->getLocalStorage().updatePersonIrisTemplates(L"test", *iter);
+		index++;
 	}
 
 	validIrisTemplates->clear();
@@ -223,6 +223,21 @@ LRESULT CCameraShowDlg::OnUserFrameCaptureMsg(WPARAM wp, LPARAM lp) {
 	ENUM_MODE mode = (ENUM_MODE)lp;
 
 	handleFrame(frame, mode);
+
+	return 1L;
+}
+
+LRESULT CCameraShowDlg::OnUserGetValidIrisTemplatesSucc(WPARAM wp, LPARAM lp) {
+	wchar_t amounts[IRIS_IDENTITY_COMMON_BUFFER_LEN];
+
+	CIrisIdentity* irisIdentity = (CIrisIdentity*)getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
+	if (NULL != irisIdentity) {
+		int amountsValue = irisIdentity->getValidIrisTemplatesVec().size();
+
+		swprintf_s(amounts, L"%d", amountsValue);
+
+		SetDlgItemText(IDC_NUMBER_OF_VALID_IRISTEMPLATES, amounts);
+	}
 
 	return 1L;
 }

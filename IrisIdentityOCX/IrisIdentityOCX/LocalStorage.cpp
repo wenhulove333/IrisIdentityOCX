@@ -13,11 +13,20 @@ CLocalStorage::~CLocalStorage()
 }
 
 void CLocalStorage::updatePersonIrisTemplates(wchar_t* name, IrisTemplates_t* irisTemplates) {
+	bool isExist = false;
 	for (vector<CPersonIrisTemplates*>::iterator ite = personIrisTemplatesVec.begin();
 		ite != personIrisTemplatesVec.end(); ite++) {
 		if (0 == lstrcmpW(name, (*ite)->getPersonName())) {
+			isExist = true;
 			(*ite)->updateIrisTemplates(irisTemplates);
+			return;
 		}
+	}
+
+	CPersonIrisTemplates* personIrisTemplates = new CPersonIrisTemplates(name);
+	if (NULL != personIrisTemplates) {
+		personIrisTemplates->updateIrisTemplates(irisTemplates);
+		personIrisTemplatesVec.push_back(personIrisTemplates);
 	}
 }
 
@@ -36,7 +45,7 @@ bool CLocalStorage::compareTemplates(void* expandablePara, char* cameraType,Iris
 	for (vector<CPersonIrisTemplates*>::iterator ite = personIrisTemplatesVec.begin();
 		ite != personIrisTemplatesVec.end(); ite++) {
 		if (0 == lstrcmpW(name, (*ite)->getPersonName())) {
-			(*ite)->compareTemplates(cameraType, matchTemplates, result);
+			return (*ite)->compareTemplates(cameraType, matchTemplates, result);
 		}
 	}
 

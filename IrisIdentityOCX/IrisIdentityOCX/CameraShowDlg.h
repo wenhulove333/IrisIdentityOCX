@@ -29,6 +29,7 @@ protected:
 
 	afx_msg LRESULT OnUserMsg(WPARAM wp, LPARAM lp);
 	afx_msg LRESULT OnUserFrameCaptureMsg(WPARAM wp, LPARAM lp);
+	afx_msg LRESULT OnUserGetValidIrisTemplatesSucc(WPARAM wp, LPARAM lp);
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);

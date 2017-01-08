@@ -145,12 +145,14 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 			validIrisTemplatesVec.push_back(irisTemplates);
 			if (validIrisTemplatesVec.size() == 5) {
 				returnInfo->setInfoReadable(L"template is euqal to 5.");
+				CIrisIdentity::MAXFRAMESINQUEUE = 0;
+				::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
 			}
 			else {
 				returnInfo->setInfoReadable(L"template is less than 5.");
+				::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
 			}
 			returnInfos->push(returnInfo);
-			CIrisIdentity::MAXFRAMESINQUEUE = 0;
 			return;
 		}
 		else if (frameInfo->getMode() == MODE_MATCH && (eyePos.leftEyePos == EYE_POS_SUITABLE || eyePos.rightEyePos == EYE_POS_SUITABLE))
@@ -158,6 +160,7 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 			bool result = this->localStorage.compareTemplates(L"test", frameInfo->getCameraType(), irisTemplates, NULL);
 			if (result) {
 				returnInfo->setInfoReadable(L"Match Procedure: match.");
+				CIrisIdentity::MAXFRAMESINQUEUE = 0;
 			}
 			else {
 				returnInfo->setInfoReadable(L"Match Procedure: can't match.");
