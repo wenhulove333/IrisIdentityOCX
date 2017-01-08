@@ -25,8 +25,6 @@ typedef struct tagCaptureThreadParas
 	ENUM_MODE mode;
 } CaptureThreadParas_t;
 
-#define CIRISIDENTITY_CAMERA_NO (1)
-
 // CCameraShowDlg ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CCameraShowDlg, CDialogEx)

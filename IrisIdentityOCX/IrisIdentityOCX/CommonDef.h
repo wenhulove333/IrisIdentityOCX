@@ -5,3 +5,5 @@
 
 //global macro definition
 #define IRIS_IDENTITY_COMMON_BUFFER_LEN   512
+
+#define CIRISIDENTITY_CAMERA_NO (1)

@@ -20,6 +20,7 @@
 *.opensdf
 *.xdc
 *.opendb
+*.VC.db
 ipch
 Debug
 Release
