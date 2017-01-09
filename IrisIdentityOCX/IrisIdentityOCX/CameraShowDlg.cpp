@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CCameraShowDlg, CDialogEx)
 	ON_MESSAGE(WM_USER_MSG, &CCameraShowDlg::OnUserMsg)
 	ON_MESSAGE(WM_USER_FRAME_CAPTURE_MSG, &CCameraShowDlg::OnUserFrameCaptureMsg)
 	ON_MESSAGE(WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, &CCameraShowDlg::OnUserGetValidIrisTemplatesSucc)
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -89,13 +90,17 @@ void CCameraShowDlg::startIrisIdentity(ENUM_MODE mode)
 		return;
 	}
 
-	SetDlgItemText(IDC_NUMBER_OF_VALID_IRISTEMPLATES, L"0");
+	SetDlgItemText(IDC_NUMBER_OF_VALID_IRISTEMPLATES, L"   0");
 
 	CIrisIdentity::MAXFRAMESINQUEUE = 1;
 	CIrisIdentity* irisIdentity = getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
 	if (NULL != irisIdentity) {
 		irisIdentity->resetIrisIdentity();
 	}
+
+	returnInfoBrush.DeleteObject();
+	returnInfoBrush.CreateSolidBrush(RGB(255, 255, 255));
+	((CStatic*)GetDlgItem(IDC_RETURNINFO))->RedrawWindow();
 }
 
 void CCameraShowDlg::endIrisIdentity() {
@@ -140,6 +145,10 @@ BOOL CCameraShowDlg::OnInitDialog()
 	restoreEntrolledIrisTemplatesFromLocalStorage(connStr);
 	free(connStr);
 
+	returnInfoBrush.DeleteObject();
+	returnInfoBrush.CreateSolidBrush(RGB(255, 255, 255));
+	((CStatic*)GetDlgItem(IDC_RETURNINFO))->RedrawWindow();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -175,6 +184,12 @@ LRESULT CCameraShowDlg::OnUserMsg(WPARAM wp, LPARAM lp) {
 
 	SetDlgItemText(IDC_RETURNINFO, returnInfo->getInfoReadable());
 
+	if (0 == StrCmpW(returnInfo->getInfoReadable(), L"Match Procedure: match.")) {
+		returnInfoBrush.DeleteObject();
+		returnInfoBrush.CreateSolidBrush(CIRISIDENTITY_PASS_COLOUR);
+		((CStatic*)GetDlgItem(IDC_RETURNINFO))->RedrawWindow();
+	}
+
 	delete returnInfo;
 
 	return 1L;
@@ -196,9 +211,15 @@ LRESULT CCameraShowDlg::OnUserGetValidIrisTemplatesSucc(WPARAM wp, LPARAM lp) {
 	if (NULL != irisIdentity) {
 		int amountsValue = irisIdentity->getValidIrisTemplatesVec().size();
 
-		swprintf_s(amounts, L"%d", amountsValue);
+		swprintf_s(amounts, L"   %d", amountsValue);
 
 		SetDlgItemText(IDC_NUMBER_OF_VALID_IRISTEMPLATES, amounts);
+
+		if (5 == amountsValue) {
+			returnInfoBrush.DeleteObject();
+			returnInfoBrush.CreateSolidBrush(CIRISIDENTITY_PASS_COLOUR);
+			((CStatic*)GetDlgItem(IDC_RETURNINFO))->RedrawWindow();
+		}
 	}
 
 	return 1L;
@@ -295,4 +316,21 @@ void CCameraShowDlg::restoreEntrolledIrisTemplatesFromLocalStorage(wchar_t* path
 	if (NULL != irisIdentity) {
 		irisIdentity->getLocalStorage().restorePersonIrisTemplatesFromLocalStorage(path);
 	}
+}
+
+HBRUSH CCameraShowDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  在此更改 DC 的任何特性
+	if (IDC_RETURNINFO == pWnd->GetDlgCtrlID()) {
+		pDC->SetBkMode(TRANSPARENT);
+		return (HBRUSH)returnInfoBrush.GetSafeHandle();
+	}
+	else if (IDC_NUMBER_OF_VALID_IRISTEMPLATES == pWnd->GetDlgCtrlID()) {
+		pDC->SetTextColor(CIRISIDENTITY_PASS_COLOUR);
+		return hbr;
+	}
+	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
+	return hbr;
 }

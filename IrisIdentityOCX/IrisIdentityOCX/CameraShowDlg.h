@@ -22,6 +22,8 @@ public:
 	static vector<CIrisIdentity*>* irisIdentityProcesses;
 	static bool isExitCaptureThread;
 
+	CBrush returnInfoBrush;
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
@@ -52,4 +54,6 @@ private:
 	wchar_t currentExecuteDirectory[255];
 
 	void handleFrame(Mat* frame, ENUM_MODE mode);
+public:
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
