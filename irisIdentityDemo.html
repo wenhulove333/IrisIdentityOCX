@@ -14,7 +14,9 @@
   }
   function SaveTemplate()
   {
-  		irisIdentity.saveIrisTemplates();
+		var firstname = document.getElementById("firstname").value;
+		irisIdentity.saveIrisTemplatesWithName(firstname);
+  		//irisIdentity.saveIrisTemplates();
   }
   function StartMatch()
   {
@@ -37,6 +39,8 @@
 <div>
   <input type="button" value="开始注册" name="StartEnroll" onClick="StartEnroll()">
   <input type="button" value="结束注册" name="StopEnroll" onClick="StopEnroll()">
+  <span>姓名：<span>
+  <input type="text" id="firstname" value="wenhu">
   <input type="button" value="保存模板" name="SaveTemplate" onClick="SaveTemplate()">
   <input type="button" value="开始识别" name="StartMatch" onClick="StartMatch()">
   <input type="button" value="结束识别" name="StartMatch" onClick="EndMatch()">
