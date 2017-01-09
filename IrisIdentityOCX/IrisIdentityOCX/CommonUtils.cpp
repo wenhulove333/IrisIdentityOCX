@@ -43,7 +43,7 @@ wchar_t* CCommonUtils::joinWString(wchar_t* wstr, ...) {
 	return joinedStr;
 }
 
-void CCommonUtils::SaveFile(wchar_t* pszFileName, BYTE* pbyData, int nLen)
+void CCommonUtils::saveFile(wchar_t* pszFileName, BYTE* pbyData, int nLen)
 {
 	if (pszFileName && pbyData && nLen > 0 && nLen < 100 * 1024 * 1024)
 	{
@@ -53,6 +53,20 @@ void CCommonUtils::SaveFile(wchar_t* pszFileName, BYTE* pbyData, int nLen)
 		{
 			DWORD dwBytesWriten = 0;
 			int nRet = WriteFile(file, pbyData, nLen, &dwBytesWriten, NULL);
+
+			CloseHandle(file);
+		}
+	}
+}
+
+void CCommonUtils::readFile(wchar_t* pszFileName, BYTE* pbyData, int nLen) {
+	if (pszFileName && pbyData && nLen > 0 && nLen < 100 * 1024 * 1024)
+	{
+		HANDLE file = CreateFile(pszFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		if (file != NULL) {
+			DWORD dwBytesRead = 0;
+			int nRet = ReadFile(file, pbyData, nLen, &dwBytesRead, NULL);
 
 			CloseHandle(file);
 		}

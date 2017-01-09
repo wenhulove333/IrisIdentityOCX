@@ -48,6 +48,9 @@ public:
 	queue<CFrameInfo*>* getFrameInfos();
 
 	vector<IrisTemplates_t*>& getValidIrisTemplatesVec();
+	void CIrisIdentity::clearValidIrisTemplatesVec();
+	
+	void CIrisIdentity::resetIrisIdentity();
 
 	CLocalStorage& getLocalStorage();
 };

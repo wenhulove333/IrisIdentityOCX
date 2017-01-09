@@ -157,7 +157,7 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 		}
 		else if (frameInfo->getMode() == MODE_MATCH && (eyePos.leftEyePos == EYE_POS_SUITABLE || eyePos.rightEyePos == EYE_POS_SUITABLE))
 		{
-			bool result = this->localStorage.compareTemplates(L"test", frameInfo->getCameraType(), irisTemplates, NULL);
+			bool result = this->localStorage.compareTemplates(NULL, frameInfo->getCameraType(), irisTemplates, NULL);
 			if (result) {
 				returnInfo->setInfoReadable(L"Match Procedure: match.");
 				CIrisIdentity::MAXFRAMESINQUEUE = 0;
@@ -216,4 +216,12 @@ vector<IrisTemplates_t*>& CIrisIdentity::getValidIrisTemplatesVec() {
 
 CLocalStorage& CIrisIdentity::getLocalStorage() {
 	return this->localStorage;
+}
+
+void CIrisIdentity::clearValidIrisTemplatesVec() {
+	validIrisTemplatesVec.clear();
+}
+
+void CIrisIdentity::resetIrisIdentity() {
+	clearValidIrisTemplatesVec();
 }

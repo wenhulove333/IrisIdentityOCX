@@ -29,6 +29,7 @@ BEGIN_DISPATCH_MAP(CIrisIdentityOCXCtrl, COleControl)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "saveIrisTemplates", dispidsaveIrisTemplates, saveIrisTemplates, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "startMatch", dispidstartMatch, startMatch, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "endMatch", dispidendMatch, endMatch, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CIrisIdentityOCXCtrl, "saveIrisTemplatesWithName", dispidsaveIrisTemplatesWithName, saveIrisTemplatesWithName, VT_EMPTY, VTS_BSTR)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -161,6 +162,7 @@ void CIrisIdentityOCXCtrl::startEnroll()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.endIrisIdentity();
 	cameraShowDlg.startIrisIdentity(MODE_ENROLL);
 }
 
@@ -179,7 +181,7 @@ void CIrisIdentityOCXCtrl::saveIrisTemplates()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
-	cameraShowDlg.saveIrisTemplates();
+	cameraShowDlg.saveIrisTemplates(L"test");
 }
 
 
@@ -210,6 +212,7 @@ void CIrisIdentityOCXCtrl::startMatch()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.endIrisIdentity();
 	cameraShowDlg.startIrisIdentity(MODE_MATCH);
 }
 
@@ -220,4 +223,13 @@ void CIrisIdentityOCXCtrl::endMatch()
 
 	// TODO: 在此添加调度处理程序代码
 	cameraShowDlg.endIrisIdentity();
+}
+
+
+void CIrisIdentityOCXCtrl::saveIrisTemplatesWithName(BSTR name)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: 在此添加调度处理程序代码
+	cameraShowDlg.saveIrisTemplates(name);
 }

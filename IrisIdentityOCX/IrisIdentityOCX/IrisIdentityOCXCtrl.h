@@ -45,6 +45,7 @@ protected:
 // 调度和事件 ID
 public:
 	enum {
+		dispidsaveIrisTemplatesWithName = 6L,
 		dispidendMatch = 5L,
 		dispidstartMatch = 4L,
 		dispidsaveIrisTemplates = 3L,
@@ -61,5 +62,6 @@ public:
 protected:
 	void startMatch();
 	void endMatch();
+	void saveIrisTemplatesWithName(BSTR name);
 };
 

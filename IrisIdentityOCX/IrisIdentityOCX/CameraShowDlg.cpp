@@ -89,7 +89,13 @@ void CCameraShowDlg::startIrisIdentity(ENUM_MODE mode)
 		return;
 	}
 
+	SetDlgItemText(IDC_NUMBER_OF_VALID_IRISTEMPLATES, L"0");
+
 	CIrisIdentity::MAXFRAMESINQUEUE = 1;
+	CIrisIdentity* irisIdentity = getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
+	if (NULL != irisIdentity) {
+		irisIdentity->resetIrisIdentity();
+	}
 }
 
 void CCameraShowDlg::endIrisIdentity() {
@@ -105,56 +111,13 @@ void CCameraShowDlg::endIrisIdentity() {
 	}
 }
 
-void CCameraShowDlg::saveIrisTemplates() //save teTempaltempaltes
+void CCameraShowDlg::saveIrisTemplates(wchar_t* name) //save teTempaltempaltes
 {
-	// TODO: 在此添加控件通知处理程序代码
-	int i;
-	for (i = 0; i < 5; i++)
-	{
-		int index = i;
-		wchar_t szFileName[512];
-
-		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_L_T.BIN", currentExecuteDirectory, index);
-		DeleteFileW(szFileName);
-		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_L_M.BIN", currentExecuteDirectory, index);
-		DeleteFileW(szFileName);
-
-		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_R_T.BIN", currentExecuteDirectory, index);
-		DeleteFileW(szFileName);
-		wsprintf(szFileName, L"%s\\OUTPUT\\%d_EYE_R_M.BIN", currentExecuteDirectory, index);
-		DeleteFileW(szFileName);
+	CIrisIdentity* irisIdentity = (CIrisIdentity*)getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
+	if (NULL != irisIdentity) {
+		irisIdentity->getLocalStorage().saveTemplates(currentExecuteDirectory, name, &irisIdentity->getValidIrisTemplatesVec());
+		irisIdentity->clearValidIrisTemplatesVec();
 	}
-
-	CIrisIdentity* irisIdentity = getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
-
-	vector<IrisTemplates_t*>* validIrisTemplates = &irisIdentity->getValidIrisTemplatesVec();
-
-	int index = 0;
-
-	for (vector<IrisTemplates_t*>::iterator iter = validIrisTemplates->begin();
-		iter != validIrisTemplates->end(); iter++)
-	{
-		wchar_t fileName[512];
-
-		if ((*iter)->bLeftValid) {
-			wsprintf(fileName, L"%s\\OUTPUT\\%d_EYE_L_T.BIN", currentExecuteDirectory, index);
-			CCommonUtils::SaveFile(fileName, (*iter)->leftEye.byTemplate, IRIS_TEMPLATE_SIZE);
-			wsprintf(fileName, L"%s\\OUTPUT\\%d_EYE_L_M.BIN", currentExecuteDirectory, index);
-			CCommonUtils::SaveFile(fileName, (*iter)->leftEye.byMask, IRIS_TEMPLATE_SIZE);
-		}
-
-		if ((*iter)->bRightValid) {
-			wsprintf(fileName, L"%s\\OUTPUT\\%d_EYE_R_T.BIN", currentExecuteDirectory, index);
-			CCommonUtils::SaveFile(fileName, (*iter)->rightEye.byTemplate, IRIS_TEMPLATE_SIZE);
-			wsprintf(fileName, L"%s\\OUTPUT\\%d_EYE_R_M.BIN", currentExecuteDirectory, index);
-			CCommonUtils::SaveFile(fileName, (*iter)->rightEye.byMask, IRIS_TEMPLATE_SIZE);
-		}
-
-		irisIdentity->getLocalStorage().updatePersonIrisTemplates(L"test", *iter);
-		index++;
-	}
-
-	validIrisTemplates->clear();
 }
 
 BOOL CCameraShowDlg::OnInitDialog()
@@ -174,6 +137,7 @@ BOOL CCameraShowDlg::OnInitDialog()
 
 	wchar_t* connStr = CCommonUtils::joinWString(currentExecuteDirectory, L"\\OUTPUT", L"/0");
 	CreateDirectory(connStr, NULL);
+	restoreEntrolledIrisTemplatesFromLocalStorage(connStr);
 	free(connStr);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -312,7 +276,7 @@ void CCameraShowDlg::handleFrame(Mat* frame, ENUM_MODE mode) {
 
 	CFrameInfo* frameInfo = new CFrameInfo(frame, CAM_EQII_30_34_28_38, mode);
 
-	commitFrame(1, frameInfo);
+	commitFrame(CIRISIDENTITY_CAMERA_NO, frameInfo);
 }
 
 CIrisIdentity* CCameraShowDlg::getIrisIdentityByCameraID(int cameraID) {
@@ -323,4 +287,12 @@ CIrisIdentity* CCameraShowDlg::getIrisIdentityByCameraID(int cameraID) {
 	}
 
 	return NULL;
+}
+
+void CCameraShowDlg::restoreEntrolledIrisTemplatesFromLocalStorage(wchar_t* path) {
+	CIrisIdentity* irisIdentity = getIrisIdentityByCameraID(CIRISIDENTITY_CAMERA_NO);
+
+	if (NULL != irisIdentity) {
+		irisIdentity->getLocalStorage().restorePersonIrisTemplatesFromLocalStorage(path);
+	}
 }

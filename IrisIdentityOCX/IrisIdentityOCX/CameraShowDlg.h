@@ -45,7 +45,8 @@ public:
 
 	void startIrisIdentity(ENUM_MODE mode);
 	void endIrisIdentity();
-	void saveIrisTemplates();
+	void saveIrisTemplates(wchar_t* name);
+	void restoreEntrolledIrisTemplatesFromLocalStorage(wchar_t* path);
 
 private:
 	wchar_t currentExecuteDirectory[255];
