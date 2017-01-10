@@ -7,28 +7,25 @@
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    position: relative; /* Stay in place */
+	z-index:2;
+    padding-top: 10px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: #fefefe;
-    margin: auto;
+	background-color: #fefefe;
     padding: 0;
-    border: 1px solid #888;
     width: 30%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
+	border: 1px solid #888;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	-webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s
@@ -87,9 +84,7 @@
   function SaveTemplate()
   {
 		var firstname = document.getElementById("yourname").value;
-		alert(firstname);
-		irisIdentity.saveIrisTemplatesWithName(yourname);
-  		//irisIdentity.saveIrisTemplates();
+		irisIdentity.saveIrisTemplatesWithName(firstname);
   }
   function StartMatch()
   {
@@ -105,7 +100,7 @@
 
 <body>
 
-<div style="text-align:center;" >
+<div style="text-align:center" >
 <object classid="clsid:76E62D85-A6FF-4510-95A5-A85082B60E5A" id="irisIdentity"  width="640" height="420" ></object>
 </div>
 
@@ -127,7 +122,7 @@
   </div>
   <div class="modal-body">
     姓名:<br>
-    <input type="text" id="yourname"><br>
+    <input type="text" id="yourname" value="wenhu"><br>
   </div>
   <div class="modal-body">
     <input type="button" value="确定" name="confirm" id="confirm">
