@@ -47,13 +47,18 @@ bool CLocalStorage::compareTemplates(void* expandablePara, char* cameraType,Iris
 		if (NULL == expandablePara) {
 			bool ret = (*ite)->compareTemplates(cameraType, matchTemplates, result);
 			if (ret) {
-				lstrcpyW(result, (*ite)->getPersonName());
+				if (NULL != result) {
+					lstrcpyW(result, (*ite)->getPersonName());
+				}
 				return ret;
 			}
 		} else {
 			if (0 == lstrcmpW(name, (*ite)->getPersonName())) {
 				bool ret = (*ite)->compareTemplates(cameraType, matchTemplates, result);
 				if (ret) {
+					if (NULL != result) {
+						lstrcpyW(result, (*ite)->getPersonName());
+					}
 					return ret;
 				}
 			}

@@ -33,5 +33,6 @@ void CIrisIdentityReturnInfo::setInfoReadable(wchar_t* infoReadable) {
 }
 
 void CIrisIdentityReturnInfo::setInfoReadable(wchar_t* infoReadable, bool isNeedFree) {
+	this->isNeedFreeReturnInfo = isNeedFree;
 	this->infoReadable = infoReadable;
 }

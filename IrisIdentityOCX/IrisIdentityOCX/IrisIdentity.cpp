@@ -171,12 +171,11 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 				if (NULL != infoReadable) {
 					wsprintf(infoReadable, L"Match Procedure: match<%s>.", name);
 					returnInfo->setInfoReadable(infoReadable, true);
+					CIrisIdentity::MAXFRAMESINQUEUE = 0;
 				}
 				else {
 					returnInfo->setInfoReadable(L"other exception.");
 				}
-
-				CIrisIdentity::MAXFRAMESINQUEUE = 0;
 			}
 			else {
 				returnInfo->setInfoReadable(L"Match Procedure: can't match.");
