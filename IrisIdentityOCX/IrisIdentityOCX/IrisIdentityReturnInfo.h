@@ -5,6 +5,7 @@ class CIrisIdentityReturnInfo
 {
 private:
 	int errorcode;
+	bool isNeedFreeReturnInfo;
 	wchar_t* infoReadable;
 
 public:
@@ -15,5 +16,6 @@ public:
 	void setErrorCode(int errorcode);
 	wchar_t* getInfoReadable();
 	void setInfoReadable(wchar_t* infoReadable);
+	void setInfoReadable(wchar_t* infoReadable, bool isNeedFree);
 };
 

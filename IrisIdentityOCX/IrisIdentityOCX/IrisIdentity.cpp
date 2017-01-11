@@ -142,24 +142,40 @@ void CIrisIdentity::getIrisTemplates(CFrameInfo* frameInfo, PreviewImageInfo_t* 
 	{
 		if (frameInfo->getMode() == MODE_ENROLL && (eyePos.leftEyePos == EYE_POS_SUITABLE && eyePos.rightEyePos == EYE_POS_SUITABLE))
 		{
-			validIrisTemplatesVec.push_back(irisTemplates);
-			if (validIrisTemplatesVec.size() == 5) {
-				returnInfo->setInfoReadable(L"template is euqal to 5.");
-				CIrisIdentity::MAXFRAMESINQUEUE = 0;
-				::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
+			if (irisTemplates->bLeftValid && irisTemplates->bRightValid) {
+				validIrisTemplatesVec.push_back(irisTemplates);
+				if (validIrisTemplatesVec.size() == 5) {
+					returnInfo->setInfoReadable(L"template is euqal to 5.");
+					CIrisIdentity::MAXFRAMESINQUEUE = 0;
+					::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
+				}
+				else {
+					returnInfo->setInfoReadable(L"template is less than 5.");
+					::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
+				}
+				returnInfos->push(returnInfo);
+				return;
 			}
 			else {
-				returnInfo->setInfoReadable(L"template is less than 5.");
-				::PostMessage(hWnd, WM_USER_GET_VALID_IRIS_TEMPLATES_SUCC, WPARAM(1), LPARAM(0));
+				returnInfo->setInfoReadable(L"templates is invalid.");
+				returnInfos->push(returnInfo);
 			}
-			returnInfos->push(returnInfo);
-			return;
 		}
 		else if (frameInfo->getMode() == MODE_MATCH && (eyePos.leftEyePos == EYE_POS_SUITABLE || eyePos.rightEyePos == EYE_POS_SUITABLE))
 		{
-			bool result = this->localStorage.compareTemplates(NULL, frameInfo->getCameraType(), irisTemplates, NULL);
+			wchar_t name[IRIS_IDENTITY_COMMON_BUFFER_LEN];
+
+			bool result = this->localStorage.compareTemplates(NULL, frameInfo->getCameraType(), irisTemplates, name);
 			if (result) {
-				returnInfo->setInfoReadable(L"Match Procedure: match.");
+				wchar_t* infoReadable = new wchar_t[IRIS_IDENTITY_COMMON_BUFFER_LEN];
+				if (NULL != infoReadable) {
+					wsprintf(infoReadable, L"Match Procedure: match<%s>.", name);
+					returnInfo->setInfoReadable(infoReadable, true);
+				}
+				else {
+					returnInfo->setInfoReadable(L"other exception.");
+				}
+
 				CIrisIdentity::MAXFRAMESINQUEUE = 0;
 			}
 			else {

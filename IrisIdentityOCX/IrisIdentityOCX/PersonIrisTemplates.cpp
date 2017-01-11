@@ -19,10 +19,17 @@ bool CPersonIrisTemplates::compareTemplates(char* cameraType, IrisTemplates_t* m
 
 	for (vector<IrisTemplates_t*>::iterator ite = irisTemplatesVec.begin();
 		ite != irisTemplatesVec.end(); ite++) {
-		leftResult = MAG_CompareTemplate(cameraType, &((*ite)->leftEye), &(matchTemplates->leftEye), NULL);
-		rightResult = MAG_CompareTemplate(cameraType, &((*ite)->leftEye), &(matchTemplates->leftEye), NULL);
-		if (leftResult == MAG_OK && rightResult == MAG_OK) {
-			return true;
+		if (matchTemplates->bLeftValid) {
+			leftResult = MAG_CompareTemplate(cameraType, &((*ite)->leftEye), &(matchTemplates->leftEye), NULL);
+			if (leftResult == MAG_OK) {
+				return true;
+			}
+		}
+		if (matchTemplates->bRightValid) {
+			rightResult = MAG_CompareTemplate(cameraType, &((*ite)->rightEye), &(matchTemplates->rightEye), NULL);
+			if (rightResult == MAG_OK) {
+				return true;
+			}
 		}
 	}
 

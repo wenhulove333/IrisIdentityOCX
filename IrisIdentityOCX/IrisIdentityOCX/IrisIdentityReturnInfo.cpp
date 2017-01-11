@@ -4,11 +4,15 @@
 
 CIrisIdentityReturnInfo::CIrisIdentityReturnInfo()
 {
+	this->isNeedFreeReturnInfo = false;
 }
 
 
 CIrisIdentityReturnInfo::~CIrisIdentityReturnInfo()
 {
+	if (this->isNeedFreeReturnInfo) {
+		free(this->infoReadable);
+	}
 }
 
 void CIrisIdentityReturnInfo::setErrorCode(int errorcode) {
@@ -25,5 +29,9 @@ wchar_t* CIrisIdentityReturnInfo::getInfoReadable() {
 }
 
 void CIrisIdentityReturnInfo::setInfoReadable(wchar_t* infoReadable) {
+	this->infoReadable = infoReadable;
+}
+
+void CIrisIdentityReturnInfo::setInfoReadable(wchar_t* infoReadable, bool isNeedFree) {
 	this->infoReadable = infoReadable;
 }

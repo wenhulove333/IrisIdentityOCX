@@ -45,12 +45,21 @@ bool CLocalStorage::compareTemplates(void* expandablePara, char* cameraType,Iris
 	for (vector<CPersonIrisTemplates*>::iterator ite = personIrisTemplatesVec.begin();
 		ite != personIrisTemplatesVec.end(); ite++) {
 		if (NULL == expandablePara) {
-			return (*ite)->compareTemplates(cameraType, matchTemplates, result);
+			bool ret = (*ite)->compareTemplates(cameraType, matchTemplates, result);
+			if (ret) {
+				lstrcpyW(result, (*ite)->getPersonName());
+				return ret;
+			}
 		} else {
 			if (0 == lstrcmpW(name, (*ite)->getPersonName())) {
-				return (*ite)->compareTemplates(cameraType, matchTemplates, result);
+				bool ret = (*ite)->compareTemplates(cameraType, matchTemplates, result);
+				if (ret) {
+					return ret;
+				}
 			}
 		}
+
+
 	}
 
 	return false;
