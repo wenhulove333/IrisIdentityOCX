@@ -26,3 +26,5 @@
 ipch
 Debug
 Release
+IrisIdentityOCX_i.c
+IrisIdentityOCXidl.h

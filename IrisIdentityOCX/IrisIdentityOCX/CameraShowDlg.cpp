@@ -184,7 +184,7 @@ LRESULT CCameraShowDlg::OnUserMsg(WPARAM wp, LPARAM lp) {
 
 	SetDlgItemText(IDC_RETURNINFO, returnInfo->getInfoReadable());
 
-	if (0 == StrStrW(returnInfo->getInfoReadable(), L"Match Procedure: match")) {
+	if (NULL != StrStrW(returnInfo->getInfoReadable(), L"Match Procedure: match")) {
 		returnInfoBrush.DeleteObject();
 		returnInfoBrush.CreateSolidBrush(CIRISIDENTITY_PASS_COLOUR);
 		((CStatic*)GetDlgItem(IDC_RETURNINFO))->RedrawWindow();
